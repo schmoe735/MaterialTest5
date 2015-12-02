@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_lib_tabs"
+    tools:context="com.cliff.ozbargain.ui.LibTabsActivity">
+    <include android:id="@+id/app_bar"
+        layout="@layout/app_bar"/>
+    <!--<it.neokree.materialtabs.MaterialTabHost-->
+        <!--android:id="@+id/materialTabHost"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--app:primaryColor="@color/primary"-->
+        <!--app:accentColor="@color/accent" />-->
+    <it.neokree.materialtabs.MaterialTabHost
+        android:id="@+id/materialTabHost"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:iconColor="@android:color/white"
+        app:primaryColor="@color/primary"
+        app:accentColor="@color/accent"
+        app:hasIcons="true"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/libpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/dealImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/vector_icon"
+        android:layout_alignTop="@+id/dealTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Large Text"
+        android:id="@+id/dealTitle"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/dealImage"
+        android:textColor="#000" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/dealDate"
+        android:width="50sp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/dealImage"
+        android:layout_toRightOf="@+id/dealImage"
+        android:layout_alignRight="@+id/dealTitle"
+        android:layout_alignEnd="@+id/dealTitle" />
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignBottom="@+id/dealDate"
+        android:gravity="right">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="25"
+            android:id="@+id/posCount"
+            android:singleLine="false"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#317a31"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="25"
+            android:id="@+id/negCount"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#812222"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
