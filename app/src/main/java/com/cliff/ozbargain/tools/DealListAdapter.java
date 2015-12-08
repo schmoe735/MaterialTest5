@@ -1,16 +1,15 @@
 package com.cliff.ozbargain.tools;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -20,7 +19,6 @@ import com.cliff.ozbargain.ui.R;
 import com.cliff.ozbargain.util.L;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,7 +60,7 @@ public class DealListAdapter extends RecyclerView.Adapter<DealListAdapter.DealIt
         holder.setDealTitle(currDeal.getTitle());
         holder.setDealDate(currDeal.getDate());
         holder.setDealRating(currDeal.getPosRating(), currDeal.getNegRating());
-
+        holder.setDescription(currDeal.getDescription());
         if(currDeal.getImageUri()!=null){
             setImage(currDeal.getImageUri(), holder.getDealImage());
         }
@@ -98,6 +96,7 @@ public class DealListAdapter extends RecyclerView.Adapter<DealListAdapter.DealIt
         private TextView posCounter;
         private TextView negCounter;
         private ImageView imagePreview;
+        private TextView dealDesc;
 
         public DealItemViewHolder(final View itemView) {
             super(itemView);
@@ -107,7 +106,11 @@ public class DealListAdapter extends RecyclerView.Adapter<DealListAdapter.DealIt
             posCounter=((TextView)itemView.findViewById(R.id.posCount));
             negCounter=((TextView)itemView.findViewById(R.id.negCount));
             imagePreview=(ImageView)(((FragmentActivity)mContext).findViewById(R.id.imagePreview));
+            dealDesc=((TextView)itemView.findViewById(R.id.description));
+
             dealImage.setOnClickListener(new View.OnClickListener() {
+
+
                 @Override
                 public void onClick(View v) {
                     ImageView thumbnailImg = (ImageView) v;
@@ -116,6 +119,7 @@ public class DealListAdapter extends RecyclerView.Adapter<DealListAdapter.DealIt
                     imagePreview.setVisibility(View.VISIBLE);
                 }
             });
+
         }
 
         public void setDealDate(String dealDate) {
@@ -128,10 +132,13 @@ public class DealListAdapter extends RecyclerView.Adapter<DealListAdapter.DealIt
             }
 
         }
-
+        public void setDescription(String desc){
+            this.dealDesc.setText(Html.fromHtml(desc));
+        }
         private ImageView getDealImage(){
             return this.dealImage;
         }
+
 
         public void setDealRating(int posRating, int negRating) {
             this.posCounter.setText(""+posRating);

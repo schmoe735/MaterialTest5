@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -41,34 +42,28 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     private Toolbar toolbar;
     private ViewPager mViewPager;
     private MaterialTabHost tabHost;
-    private static final int ALL_DEALS = 1;
-    private static final int POPULAR_DEALS = 0;
-    private static final int LIVE = 2;
+    private static final int ALL_DEALS = 0;
+    private static final int POPULAR_DEALS = 1;
+    private static final int CATEGORY = 2;
     private PagerAdapter mPagerAdapter;
     private JobScheduler mJobScheduler;
+    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar)findViewById(R.id.app_bar);
-//Android Service
-        mJobScheduler=JobScheduler.getInstance(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                constructJob();
-            }
-        },300000);
-        constructJob();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         NavigationDrawerFragment fragment= (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_nav_drawer);
         fragment.setup(R.id.fragment_nav_drawer, (DrawerLayout) findViewById(R.id.drawer_layout),toolbar);
 
         tabHost= (MaterialTabHost) findViewById(R.id.materialTabHost);
         mViewPager= (ViewPager) findViewById(R.id.pager);
         mPagerAdapter=new PagerAdapter(getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -94,6 +89,16 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
                     .setTabListener(this));
         }
 
+        //Android Service
+        mJobScheduler=JobScheduler.getInstance(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                constructJob();
+            }
+        }, 300000);
+//        constructJob();
+
         buildFloatingIcon();
     }
 
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         icon.setImageResource(R.drawable.vector_icon);
         icon.setPadding(0, 0, 0, 0);
 
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+        actionButton = new FloatingActionButton.Builder(this)
 
                 .setContentView(icon)
                 .build();
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         help.setTag(HELP);
         info.setOnClickListener(this);
         info.setTag(INFO);
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+        actionMenu = new FloatingActionMenu.Builder(this)
                 .addSubActionView(help)
                 .addSubActionView(info)
                 .attachTo(icon)
@@ -193,32 +198,49 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     }
 
     public void onDrawerItemClicked(int position) {
-        mViewPager.setCurrentItem(position%3);
+        mViewPager.setTag(R.string.live_action,""+position);
+        mViewPager.setCurrentItem(position);
     }
 
-    class PagerAdapter extends FragmentPagerAdapter{
+    public void onDrawerOpened() {
+        mViewPager.setCurrentItem(ALL_DEALS);
+    }
+
+    class PagerAdapter extends FragmentStatePagerAdapter{
 
         int[] icons = new int[]{R.drawable.vector_icon, R.drawable.vector_icon, R.drawable.vector_icon, R.drawable.vector_icon, R.drawable.vector_icon, R.drawable.vector_icon};
         String tabs[];
+        String urls[];
+
 //        int[] icons = new int[]{R.drawable.vector_icon, R.drawable.vector_icon, R.drawable.icon_moon,R.drawable.ic_action,R.drawable.ic_facebook};
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
             tabs=getResources().getStringArray(R.array.tabs);
+            urls=getResources().getStringArray(R.array.menu_urls);
         }
 
         @Override
         public Fragment getItem(int position) {
 
             switch (position){
-                case POPULAR_DEALS:
-                    return OZBDeals.newInstance(getString(R.string.popular_deals_url), null);
                 case ALL_DEALS:
-                    return AllDeals.newInstance(getString(R.string.all_deals_url), null);
-                case LIVE:
-                    return LiveAction.newInstance(null,null);
+                    return LiveAction.newInstance(getString(R.string.all_deals_url),""+position);
+                case POPULAR_DEALS:
+                    return LiveAction.newInstance(getString(R.string.popular_deals_url),""+position);
+                case CATEGORY:
+                    return getCategoryFragment();
+
             }
             return MyFragment.getInstance(position);
+        }
+
+        private Fragment getCategoryFragment() {
+            String category = (String) mViewPager.getTag(R.string.live_action);
+            if (category!=null){
+                return LiveAction.newInstance(urls[Integer.parseInt(category)],category);
+            }
+            return LiveAction.newInstance(getString(R.string.popular_deals_url),category);//default
         }
 
         @Override
@@ -239,6 +261,15 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
         public Drawable getIcon(int i) {
             return getResources().getDrawable(icons[i]);
+        }
+    }
+
+    public void onDrawerSlide(float offset){
+        if (actionMenu!=null){
+            if (actionMenu.isOpen()){
+                actionMenu.close(true);
+            }
+            actionButton.setTranslationX(offset*300);
         }
     }
 

@@ -2,8 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@drawable/custom_bg"
+    android:background="@android:color/darker_gray"
     android:clickable="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_bg">
     <ImageView
         android:id="@+id/menu_icon"
         android:layout_marginLeft="13dp"
@@ -20,4 +24,6 @@
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:text="Dummy"/>
+
+    </RelativeLayout>
 </RelativeLayout>

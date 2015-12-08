@@ -4,7 +4,6 @@ package com.cliff.ozbargain.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,8 +15,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.cliff.ozbargain.animation.AnimatonUtils;
 import com.cliff.ozbargain.callbacks.DealsLoadedListener;
 import com.cliff.ozbargain.core.OZBApplication;
 import com.cliff.ozbargain.model.Deal;
@@ -55,7 +54,6 @@ public class OZBDeals extends Fragment implements DealsLoadedListener, SwipeRefr
         OZBDeals fragment = new OZBDeals();
         Bundle args = new Bundle();
         args.putString(L.DEAL_TYPE, dealType);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,16 +81,28 @@ public class OZBDeals extends Fragment implements DealsLoadedListener, SwipeRefr
             @Override
             public void onClick(View view, int position) {
                 previewImage.setVisibility(View.GONE);
-                Uri uri = Uri.parse(dealListAdapter.getDeals().get(position).getOzDealLink()); // missing 'http://' will cause crashed
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+                View description = view.findViewById(R.id.description);
 
+
+                AnimatonUtils.animate(description);
+                if (View.VISIBLE == description.getVisibility()) {
+                    view.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+                    description.setVisibility(View.GONE);
+                } else {
+                    view.setBackgroundColor(getResources().getColor(R.color.accent));
+                    description.setBackgroundColor(getResources().getColor(android.R.color.white));
+                    description.setVisibility(View.VISIBLE);
+                }
 
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "onLongClick" + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "onLongClick" + position, Toast.LENGTH_SHORT).show();
+                Uri uri = Uri.parse(dealListAdapter.getDeals().get(position).getOzDealLink()); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         }));
         rvPopularDeals.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -100,27 +110,17 @@ public class OZBDeals extends Fragment implements DealsLoadedListener, SwipeRefr
         if (savedInstanceState!=null){
             deals = (ArrayList<Deal>) savedInstanceState.get(DEALS);
         }else{
+            OZBApplication.getWritableDatabase().deleteAllDeals();
             deals=OZBApplication.getWritableDatabase().getAllDeals();
             if (deals.isEmpty()){
-                new DealsTask(this).execute();
+                new DealsTask(this).execute(getResources().getString(R.string.all_deals_url));
             }
-//            new AsyncTask<Void, Void, Void>() {
-//                @Override
-//                protected Void doInBackground(Void... params) {
-//                    dealListAdapter.setDeals(OZBApplication.getWritableDatabase().getAllDeals());
-//                    return null;
-//                }
-//            };
-
         }
         dealListAdapter.setDeals(deals);
 
         swipeRefreshLayout.setOnRefreshListener(this);
         return fragmentPopularDeals;
     }
-
-
-
 
 
 
@@ -134,6 +134,7 @@ public class OZBDeals extends Fragment implements DealsLoadedListener, SwipeRefr
     @Override
     public void onDealsLoaded(ArrayList<Deal> deals) {
         if (swipeRefreshLayout.isRefreshing()){
+            dealListAdapter.getDeals().clear();
             swipeRefreshLayout.setRefreshing(false);
         }
         dealListAdapter.setDeals(deals);
@@ -142,7 +143,7 @@ public class OZBDeals extends Fragment implements DealsLoadedListener, SwipeRefr
 
     @Override
     public void onRefresh() {
-        new DealsTask(this).execute();
+        new DealsTask(this).execute(getResources().getString(R.string.all_deals_url));
     }
 
     class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{

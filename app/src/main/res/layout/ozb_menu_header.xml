@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+
+    >
 
     <com.pkmmte.view.CircularImageView
-        android:layout_width="225dp"
-        android:layout_height="225dp"
+        android:id="@+id/imageAvatar"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center"
         app:border="true"
         app:border_color="@color/primary"
         app:border_width="4dp"
-        app:shadow="false" />
-</LinearLayout>
+        app:shadow="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageAvatar"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hi"
+            android:gravity="right"
+            android:textColor="@android:color/white"
+            style="@style/Base.TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vivz"
+            android:gravity="right"
+            android:textColor="@android:color/white"
+            style="@style/Base.TextAppearance.AppCompat.Medium"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/accent"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="slidenerd@gmail.com"
+            android:textColor="@android:color/white"
+            android:gravity="right"
+            style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+
+    </LinearLayout>
+</RelativeLayout>

@@ -11,6 +11,8 @@ import com.cliff.ozbargain.util.L;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Clifford on 1/12/2015.
@@ -27,7 +29,7 @@ public class DealsDatabase {
 
     public void insertDeals(ArrayList<Deal> dealList, boolean clearPrevious){
         if (clearPrevious){
-            deleteAll();
+            deleteAllDeals();
         }
 
         String sql = "INSERT INTO " + DealsHelper.DEAL_TABLE_NAME + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -82,7 +84,54 @@ public class DealsDatabase {
         return deals;
     }
 
-    private void deleteAll() {
-        mDatabase.delete(DEAL_TABLE_NAME, null, null);
+    public void deleteAllDeals() {
+        int deleted = mDatabase.delete(DEAL_TABLE_NAME, null, null);
+        L.d(TAG, "Deleted rows"+ deleted);
+    }
+
+    public void insertMeta(HashMap<String,String> metaInfo){
+        String value = null;
+        String sql = "INSERT INTO " + DealsHelper.DEAL_META_TABLE_NAME + " VALUES (?,?,?);";
+        SQLiteStatement statement = mDatabase.compileStatement(sql);
+
+        if (metaInfo != null){
+
+            mDatabase.beginTransaction();
+
+            for (String key : metaInfo.keySet()) {
+                value = metaInfo.get(key);
+                if (key!=null && value !=null){
+                    statement.clearBindings();
+                    statement.bindString(2, key);
+                    statement.bindString(3, metaInfo.get(key));
+                    statement.execute();
+                }
+            }
+            mDatabase.setTransactionSuccessful();
+            mDatabase.endTransaction();
+        }
+    }
+
+    public void updateMeta(String key, String value){
+        String sql = "UPDATE "+DEAL_META_TABLE_NAME + " SET "+DEAL_META_VALUE+" = ? WHERE "+DEAL_META_KEY+" = ? " ;
+        SQLiteStatement statement = mDatabase.compileStatement(sql);
+        statement.bindString(1, value);
+        statement.bindString(2, key);
+        statement.execute();
+    }
+
+
+    public Map<String, String> loadMeta(){
+        Map<String,String> deals = new HashMap<>();
+        String[] columns = {DEAL_META_KEY,DEAL_META_VALUE};
+        Cursor cursor = mDatabase.query(DEAL_META_TABLE_NAME, columns, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()){
+            do {
+                deals.put(cursor.getString(cursor.getColumnIndex(DEAL_META_KEY)), cursor.getString(cursor.getColumnIndex(DEAL_META_VALUE)) );
+
+            }while (cursor.moveToNext());
+        }
+        return deals;
     }
 }
+

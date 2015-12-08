@@ -3,6 +3,8 @@ package com.cliff.ozbargain.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.cliff.ozbargain.util.L;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import java.util.List;
  */
 public class Deal implements Parcelable{
 
-    private static DateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy hh:mm");
     private String title;
     private Date date;
     private int posRating;
@@ -128,7 +129,7 @@ public class Deal implements Parcelable{
         return new Date();
     }
     public String getDate() {
-        return dateFormat.format(getDateObj());
+        return L.time(getDateObj());
     }
 
     public void setDate(Date date) {
@@ -148,7 +149,12 @@ public class Deal implements Parcelable{
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        int divIdx = description.indexOf("</div>");
+
+        if (divIdx>0){
+            this.description = description.substring(divIdx+6);
+        }
+
     }
 
     public String getImageUri() {

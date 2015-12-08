@@ -7,16 +7,15 @@ import com.cliff.ozbargain.callbacks.DealsLoadedListener;
 import com.cliff.ozbargain.core.OZBApplication;
 import com.cliff.ozbargain.model.Deal;
 import com.cliff.ozbargain.network.VolleyLoader;
+import com.cliff.ozbargain.ui.R;
 import com.cliff.ozbargain.util.XmlService;
 
 import java.util.ArrayList;
 
-import me.tatarka.support.job.JobParameters;
-
 /**
  * Created by Clifford on 1/12/2015.
  */
-public class DealsTask extends AsyncTask<Void, Void, ArrayList<Deal>> {
+public class DealsTask extends AsyncTask<String, Void, ArrayList<Deal>> {
 
     private VolleyLoader volleyLoader;
     private RequestQueue requestQueue;
@@ -36,9 +35,13 @@ public class DealsTask extends AsyncTask<Void, Void, ArrayList<Deal>> {
 
 
     @Override
-    protected ArrayList<Deal> doInBackground(Void... params) {
+    protected ArrayList<Deal> doInBackground(String... params) {
+        int pages = 5;
+        if (params.length>1){
+            pages=Integer.parseInt(params[1])>1?1:5;
+        }
 
-        return XmlService.getFeed("https://www.ozbargain.com.au/deals/feed", requestQueue, 0, 5);
+        return XmlService.getDeals(params[0], requestQueue, 0, pages);
 
     }
 

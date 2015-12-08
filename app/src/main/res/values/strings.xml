@@ -10,11 +10,13 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <array name="tabs">
-        <item>Popular Deals</item>
         <item>All Deals</item>
+        <item>Popular Deals</item>
         <item>Categories</item>
     </array>
     <array name="categories">
+        <item>All Deals</item>
+        <item>Popular Deals</item>
         <item name="menu_1">Electrical &amp; Electronics</item>
         <item name="menu_2">Gaming</item>
         <item name="menu_3">Food &amp; Grocery</item>
@@ -24,11 +26,28 @@
         <item name="menu_7">Entertainment</item>
         <item name="menu_8">Home &amp; Garden</item>
     </array>
+    <array name="meta">
+        <item>data_update_frequency_seconds|180</item>
+        <item>page_refresh_frequency|200</item>
+    </array>
     <string name="title_activity_lib_tabs">LibTabsActivity</string>
     <string name="title_activity_vector_test">VectorTestActivity</string>
     <string name="all_deals">All Deals</string>
     <string name="popular_deals">Popular Deals</string>
     <string name="live_action">Live Action</string>
-    <string name="all_deals_url">http://www.ozbargain.com.au/deals/feed</string>
-    <string name="popular_deals_url">http://www.ozbargain.com.au/feed</string>
+    <string name="all_deals_url">https://www.ozbargain.com.au/deals/feed</string>
+    <string name="popular_deals_url">https://www.ozbargain.com.au/feed</string>
+    <string name="electronics">https://www.ozbargain.com.au/cat/electrical-electronics/feed</string>
+    <array name="menu_urls">
+        <item name="all_deals">https://www.ozbargain.com.au/deals/feed</item>
+        <item name="popular_deals">https://www.ozbargain.com.au/feed</item>
+        <item name="menu_1">https://www.ozbargain.com.au/cat/electrical-electronics/feed</item>
+        <item name="menu_2">https://www.ozbargain.com.au/cat/gaming/feed</item>
+        <item name="menu_3">https://www.ozbargain.com.au/cat/food-grocery/feed</item>
+        <item name="menu_4">https://www.ozbargain.com.au/cat/computing/feed</item>
+        <item name="menu_5">https://www.ozbargain.com.au/cat/fashion-apparel/feed</item>
+        <item name="menu_6">https://www.ozbargain.com.au/cat/mobile/feed</item>
+        <item name="menu_7">https://www.ozbargain.com.au/cat/entertainment/feed</item>
+        <item name="menu_8">https://www.ozbargain.com.au/cat/home-garden/feed</item>
+    </array>
 </resources>

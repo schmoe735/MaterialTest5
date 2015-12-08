@@ -33,6 +33,8 @@ dependencies {
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
     compile 'me.tatarka.support:jobscheduler:0.1.1'
     compile 'com.pkmmte.view:circularimageview:1.1'
+    compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.6'
+
 
 
 }

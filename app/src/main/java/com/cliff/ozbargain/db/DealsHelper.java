@@ -12,7 +12,7 @@ import com.cliff.ozbargain.util.L;
 public class DealsHelper extends   DBHelper {
     //DB Details
     protected static final String DB_NAME = "ozb_deals_db";
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 10;
     private static final String TAG = DealsHelper.class.getSimpleName();
     private Context mContext;
 
@@ -31,6 +31,11 @@ public class DealsHelper extends   DBHelper {
     protected static final String COLUMN_EXT_DEAL_URL = "T_EXT_DEAL_URL";
     protected static final String COLUMN_COMMENT_COUNT = "I_COMMENT_COUNT";
     protected static final String COLUMN_CLICK_COUNT = "I_CLICK_COUNT";
+
+
+    protected static final String DEAL_META_TABLE_NAME = "DEAL_META";
+    protected static final String DEAL_META_KEY = "NAME";
+    protected static final String DEAL_META_VALUE = "VALUE";
 
     //Category Table
     protected static final String CATEGORY_TABLE_NAME="CATEGORY";
@@ -53,6 +58,7 @@ public class DealsHelper extends   DBHelper {
         try {
             db.execSQL(generateCreateTableScript(DEAL_TABLE_NAME, COLUMN_TITLE, COLUMN_DATE, COLUMN_POSRATING,
                     COLUMN_NEGRATING, COLUMN_DESC, COLUMN_IMG_URI, COLUMN_CREATOR_ID, COLUMN_OZB_DEAL_LINK, COLUMN_EXT_DEAL_URL, COLUMN_COMMENT_COUNT, COLUMN_CLICK_COUNT));
+            db.execSQL(generateCreateTableScript(DEAL_META_TABLE_NAME, DEAL_META_KEY, DEAL_META_VALUE));
             L.d(TAG, " Deals Table created ");
         }catch (SQLiteException e){
             L.d(TAG, " Exception while creating the database", e);

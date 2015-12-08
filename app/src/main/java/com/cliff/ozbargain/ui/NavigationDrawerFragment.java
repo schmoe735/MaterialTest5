@@ -71,7 +71,8 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                ((MainActivity)getActivity()).onDrawerItemClicked(position);
+                if (position>0)
+                ((MainActivity)getActivity()).onDrawerItemClicked(position-1);
             }
 
             @Override
@@ -92,6 +93,7 @@ public class NavigationDrawerFragment extends Fragment {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 //check if its the first time. save to shared pref and check
+                ((MainActivity)getActivity()).onDrawerOpened();
                 if (!mUserLearnedDrawer){
                     mUserLearnedDrawer=true;
                     saveToPreferences(getActivity(),KEY_USER_LEARNED_DRAWER,"true");
@@ -108,19 +110,21 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
+                ((MainActivity)getActivity()).onDrawerSlide(slideOffset);
                 if(slideOffset<0.6) {
                     toolbar.setAlpha(1 - slideOffset);
                 }
             }
         };
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState){
-            mDrawerLayout.openDrawer(mContainerView);
-        }
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
                 mDrawerToggle.syncState();
+                if (!mUserLearnedDrawer && !mFromSavedInstanceState){
+                    mDrawerLayout.openDrawer(mContainerView);
+                }
             }
         });
     }

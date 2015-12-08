@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+
+import java.util.Date;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
@@ -14,6 +18,8 @@ public class L {
     public static final String ERROR = "ERROR";
     public static final String PAGE_PARAM ="?page=%d";
     public static final String DEAL_TYPE= "DEAL_TYPE";
+    private static final PrettyTime prettyTime = new PrettyTime();
+
     public static void m(Context context, String message){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -22,6 +28,10 @@ public class L {
         d(tag, text, null);
     }
     public static void d(String tag, String text, Exception e){
-        Log.d(tag,text,e);
+        Log.d(tag, text, e);
+    }
+
+    public static String time(Date date){
+        return  prettyTime.format(date);
     }
 }

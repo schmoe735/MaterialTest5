@@ -47,7 +47,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
         android:layout_alignBottom="@+id/dealDate"
-        android:gravity="right">
+        android:gravity="right"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_width="50dp"
@@ -72,6 +73,20 @@
             android:background="#812222"
             android:gravity="center"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/description"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/dealImage"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:visibility="gone"/>
+
 
 
 </RelativeLayout>
